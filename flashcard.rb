@@ -2,6 +2,7 @@
 class View
   def welcome!
     puts "Welcome to Ruby Flash Cards. To play, just enter the correct term for each definition.  Ready?  Go!"
+    puts "Type 'quit' to quit and 'skip' to skip to the next card"
   end
 
   def print_definition(card)
@@ -10,6 +11,10 @@ class View
 
   def incorrect
     puts "WHATTT!"
+  end
+
+  def display_skip_message
+    puts "You are skipping to the next card"
   end
 
   def correct
@@ -49,7 +54,7 @@ class Card
   attr_reader :definition, :ans
   def initialize(definition, ans)
     @definition = definition 
-    @ans = ans  
+    @ans = ans.strip  
   end
 end
 
@@ -71,10 +76,10 @@ class Controller
     card = 0
     while @still_playing
       #@view.print_definition(@card_deck[card].definition)
-      puts @card_deck[card].definition
+      @view.print_definition(@card_deck[card])
       @user_input = gets.chomp
       parse_input(card)
-      if answer_correct
+      if @answer_correct
         card == (@card_deck.length - 1) ? card = 0 : card += 1
       end
     end
@@ -83,12 +88,14 @@ class Controller
   def parse_input(card)
     case @user_input
     when "quit" then @still_playing = false
-    when "skip" then @view.display_skip_message
+    when "skip"
+      @view.display_skip_message
+      @answer_correct = true
     when @card_deck[card].ans
-      @view.display_correct_message
+      @view.correct
       @answer_correct = true
     else 
-      @view.display_incorrect_message 
+      @view.incorrect 
       @answer_correct = false
     end   
   end
