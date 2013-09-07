@@ -1,5 +1,4 @@
 
-
 class View
   def welcome!
     puts "Welcome to Ruby Flash Cards. To play, just enter the correct term for each definition.  Ready?  Go!"
@@ -16,9 +15,8 @@ class View
   def correct
     puts "YEEEEAH!!!!"
   end
-
-  
 end
+
 
 
 class CardDeck
@@ -61,6 +59,7 @@ class Controller
     @view = View.new
     @user_input = nil
     @still_playing = true
+    @answer_correct = false
   end
 
   def start
@@ -71,10 +70,13 @@ class Controller
   def play
     card = 0
     while @still_playing
-      @view.print_definition(@card_deck[card].definition)
+      #@view.print_definition(@card_deck[card].definition)
+      puts @card_deck[card].definition
       @user_input = gets.chomp
       parse_input(card)
-      card == (@card_deck.length - 1) ? card = 0 : card += 1
+      if answer_correct
+        card == (@card_deck.length - 1) ? card = 0 : card += 1
+      end
     end
   end
 
@@ -82,9 +84,12 @@ class Controller
     case @user_input
     when "quit" then @still_playing = false
     when "skip" then @view.display_skip_message
-    when @card_deck[card].ans then @view.display_correct_message
+    when @card_deck[card].ans
+      @view.display_correct_message
+      @answer_correct = true
     else 
-      @view.display_incorrect_message
+      @view.display_incorrect_message 
+      @answer_correct = false
     end   
   end
 end
