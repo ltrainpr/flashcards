@@ -1,19 +1,24 @@
 
-# class CardDeck
-#   attr_reader :array, :definition
-#   def initialize
-#     @array = []
-#     @definition
-#   end
-# end
 
-# class View
-#   def print_definition
-#   end
+class View
+  def welcome!
+    puts "Welcome to Ruby Flash Cards. To play, just enter the correct term for each definition.  Ready?  Go!"
+  end
 
-#   def welcome!
-#   end
-# end
+  def print_definition(card)
+    puts card.definition
+  end
+
+  def incorrect
+    puts "WHATTT!"
+  end
+
+  def correct
+    puts "YEEEEAH!!!!"
+  end
+
+  
+end
 
 
 class CardDeck
